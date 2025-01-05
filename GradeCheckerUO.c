@@ -136,7 +136,7 @@ int main(){
             }else{
                 strcat(letterGrade, *ptr=='+' ? "_PLUS" : "_MINUS");
             }
-            *ptr++;
+            ptr++;
         }
         *ptr = '\0';
 
