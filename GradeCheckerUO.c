@@ -131,7 +131,8 @@ int main(){
         //  Formatize inputs like "X+" or "X-" to "X_PLUS" and "X_MINUS"
         while( *ptr != '\0' ){
             if( *ptr != '+' && *ptr != '-' ){
-                strcat(letterGrade, toupper(*ptr));                
+                char temp[2] = {toupper(*ptr), '\0'};
+                strcat(letterGrade, temp);                
             }else{
                 strcat(letterGrade, *ptr=='+' ? "_PLUS" : "_MINUS");
             }
