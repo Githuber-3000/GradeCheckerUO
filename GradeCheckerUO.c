@@ -52,26 +52,26 @@ int main(){
         {   NS     , -1 , -1    }  
     };
 
-    /*  A look up table between the */
+    /*  A look up table between the letter type inputGrade and GRADINGS */
     const char *LetterGradeTable[] = {
-      [A_PLUS]  = "A+",
-      [A]       = "A",
-      [A_MINUS] = "A-",
-      [B_PLUS]  = "B+",
-      [B]       = "B",
-      [C_PLUS]  = "C+",
-      [C]       = "C",
-      [D_PLUS]  = "D+",
-      [D]       = "D",
-      [E]       = "E",
-      [F]       = "F",
-      [ABS]     = "ABS",
-      [EIN]     = "EIN",
-      [CR]      = "CR",
-      [NC]      = "NC",
-      [P]       = "P",
-      [S]       = "S",
-      [NS]      = "NS"
+        [A_PLUS]  = "A+",
+        [A]       = "A",
+        [A_MINUS] = "A-",
+        [B_PLUS]  = "B+",
+        [B]       = "B",
+        [C_PLUS]  = "C+",
+        [C]       = "C",
+        [D_PLUS]  = "D+",
+        [D]       = "D",
+        [E]       = "E",
+        [F]       = "F",
+        [ABS]     = "ABS",
+        [EIN]     = "EIN",
+        [CR]      = "CR",
+        [NC]      = "NC",
+        [P]       = "P",
+        [S]       = "S",
+        [NS]      = "NS"
     };
 
     //{Letter Grade, Meaning}
@@ -109,7 +109,7 @@ int main(){
 
     if( *endPtrForNumericalInput=='\0' ){
 
-        //Valid Grades range from 0 to 100
+        //Valid Grades should range from 0 to 100
         if( numberGrade > 100 || numberGrade < 0){
             printf( numberGrade>100 ? "INVALID_GRADE: Input Grade Is Greater than 100" 
                                     : "INVALID_GRADE: Input Grade Is Smaller than 0"   );
@@ -128,13 +128,17 @@ int main(){
         //inputGrade is letter type
         char *ptr = inputGrade;
 
-        for( int i=0; i <= strlen(inputGrade); i++){
+        //  Formatize inputs like "X+" or "X-" to "X_PLUS" and "X_MINUS"
+        while( *ptr != '\0' ){
             if( *ptr != '+' && *ptr != '-' ){
                 strcat(letterGrade, toupper(*ptr));                
             }else{
                 strcat(letterGrade, *ptr=='+' ? "_PLUS" : "_MINUS");
             }
+            *ptr++;
         }
+        *ptr = '\0';
+
     }else{
         printf( "Invalid Input!");
     }
