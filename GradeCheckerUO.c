@@ -119,7 +119,7 @@ int main(){
         //inputGrade is a number
         for( int i=0; i < sizeof(GRADINGS)-1; i++ ){
             if( numberGrade >= GRADINGS[i][1] ){
-                strcpy( letterGrade, GRADINGS[i][0] );
+                strcpy( letterGrade, LetterGradeTable[i] );
                 break;
             }
         }
