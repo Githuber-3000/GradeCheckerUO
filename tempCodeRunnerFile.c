@@ -1,1 +1,0 @@
-GRADINGS[i][0]
