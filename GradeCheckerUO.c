@@ -5,9 +5,9 @@
 #include <string.h>
 #include <ctype.h>
 
-/*  Connecter between LetterGradeTable to GRADINGS 
+/*  Connecter between letterGradeTable to GRADINGS 
     Allows GRADINGS be an integer array, thus avoid some parsing when dealing with number grades and grade points */
-enum LetterGrade{
+enum letterGradeENUM{
     A_PLUS  ,
     A       ,
     A_MINUS ,
@@ -53,7 +53,7 @@ int main(){
     };
 
     /*  A look up table between the letter type inputGrade and GRADINGS */
-    const char *LetterGradeTable[] = {
+    const char *letterGradeTable[] = {
         [A_PLUS]  = "A+",
         [A]       = "A",
         [A_MINUS] = "A-",
@@ -71,7 +71,8 @@ int main(){
         [NC]      = "NC",
         [P]       = "P",
         [S]       = "S",
-        [NS]      = "NS"
+        [NS]      = "NS",
+        NULL
     };
 
     //{Letter Grade, Meaning}
@@ -99,10 +100,12 @@ int main(){
     };
     //printf("%s", MINIMUM_PASSING);
 
-    char letterGrade[10], inputGrade[10], *endPtrForNumericalInput;
+    char letterGrade[10] = {0}, inputGrade[100] = {0}; 
+    char *endPtrForNumericalInput;  
     double numberGrade;
+    int gradePoint;
 
-    printf( "Grade: " );
+    printf( "\nGrade:   " );
     scanf( "%s", inputGrade );
 
     numberGrade = strtod( inputGrade, &endPtrForNumericalInput );
@@ -111,25 +114,37 @@ int main(){
 
         //Valid Grades should range from 0 to 100
         if( numberGrade > 100 || numberGrade < 0){
-            printf( numberGrade>100 ? "INVALID_GRADE: Input Grade Is Greater than 100" 
-                                    : "INVALID_GRADE: Input Grade Is Smaller than 0"   );
+            printf( numberGrade>100 ? "INVALID_GRADE: Input Grade is Greater than 100\n\n" 
+                                    : "INVALID_GRADE: Input Grade is Smaller than 0\n\n"   );
             return 0;
         }
 
         //inputGrade is a number
         for( int i=0; i < sizeof(GRADINGS)-1; i++ ){
             if( numberGrade >= GRADINGS[i][1] ){
-                strcpy( letterGrade, LetterGradeTable[i] );
+                strcpy( letterGrade, letterGradeTable[i] );
+                gradePoint = GRADINGS[i][2];
                 break;
             }
         }
+        printf( "Letter grade:  %s\n", letterGrade );
+        printf( "Grade point(s) earned:    %d\n", gradePoint );
+        printf("%s", MINIMUM_PASSING);
+
     }else if( *endPtrForNumericalInput==inputGrade[0] ){
         
         //inputGrade is letter type
         char *ptr = inputGrade;
 
-        //  Formatize inputs like "X+" or "X-" to "X_PLUS" and "X_MINUS"
+        //  Make the string all uppercase
         while( *ptr != '\0' ){
+            char temp[2] = { toupper( *ptr ), '\0' };
+            strcat( letterGrade, temp );
+            ptr++;
+        }
+
+        //  Formatize inputs like "X+" or "X-" to "X_PLUS" and "X_MINUS"
+        /*while( *ptr != '\0' ){
             if( *ptr != '+' && *ptr != '-' ){
                 char temp[2] = {toupper(*ptr), '\0'};
                 strcat(letterGrade, temp);                
@@ -138,11 +153,29 @@ int main(){
             }
             ptr++;
         }
-        *ptr = '\0';
+        *ptr = '\0';*/
+
+        for( int i=0; letterGradeTable[i] != NULL ; i++ ){
+            if( strcmp( letterGrade, letterGradeTable[i] ) == 0 ){
+                numberGrade = GRADINGS[i][1];
+                gradePoint = GRADINGS[i][2];
+                if( i==0 ){
+                    printf( "Number grade:  %.2lf ~ 100\n", numberGrade );
+                }else{
+                    printf( "Number grade:  %.2lf ~ %d\n", numberGrade, GRADINGS[i-1][1] );
+                }
+                printf( "Grade point(s) earned:    %d\n", gradePoint );
+                printf("%s", MINIMUM_PASSING);
+
+                break;
+            }
+        }
 
     }else{
         printf( "Invalid Input!");
+        return 0;
     }
+    
     
 
     return 0;
